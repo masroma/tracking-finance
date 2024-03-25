@@ -1,12 +1,17 @@
 export const useCurrency = (amount) => {
     const currency = computed(() => {
-        return new Intl.NumberFormat('id-ID', {
-            style:'currency',
-            currency: 'IDR'
-        }).format(isRef(amount) ? amount.value : amount)
-    })
+        const formattedAmount = (isRef(amount) ? amount.value : amount).toLocaleString('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+        });
+
+        // Menghapus dua digit nol di belakang koma
+        return formattedAmount.replace(/\.00$/, '');
+    });
 
     return {
         currency
-    }
-}
+    };
+};
